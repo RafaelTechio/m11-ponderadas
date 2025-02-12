@@ -19,11 +19,11 @@ library(vcd)
 ## Carregamento dos Dados
 
 ```{r}
-InteliStatus <- read_csv("../InteliStatus.csv")
-InteliVeiculo <- read_csv("../InteliVeiculo.csv")
-InteliResultados <- read_csv("../InteliResultados.csv")
-InteliFalhas <- read_csv("../InteliFalhas.csv")
-#Inteli5Merges <- read.csv2("../5-ids.csv", stringsAsFactors = FALSE)
+InteliStatus <- read_csv("../../../../../../datasources-project/InteliStatus.csv")
+InteliVeiculo <- read_csv("../../../../../../datasources-project/InteliVeiculo.csv")
+InteliResultados <- read_csv("../../../../../../datasources-project/InteliResultados.csv")
+InteliFalhas <- read_csv("../../../../../../datasources-project/InteliFalhas.csv")
+Inteli5Merges <- read.csv2("../../../../../../datasources-project/5-ids.csv", stringsAsFactors = FALSE)
 ```
 
 ## Visualização das primeiras Linhas
@@ -33,7 +33,7 @@ head(InteliStatus)
 head(InteliVeiculo)
 head(InteliResultados)
 head(InteliFalhas)
-#head(Inteli5Merges)
+head(Inteli5Merges)
 ```
 
 ## Verificação da estrutura dos Dados
@@ -43,7 +43,7 @@ str(InteliStatus)
 str(InteliVeiculo)
 str(InteliResultados)
 str(InteliFalhas)
-#str(Inteli5Merges)
+str(Inteli5Merges)
 ```
 
 # Resumo Estatístico e Descrição dos Dados
@@ -63,8 +63,8 @@ summary(InteliResultados)
 cat("\n\n\n===== Inteli Falhas =====\n\n\n")
 summary(InteliFalhas)
 
-#cat("\n\n\n===== Inteli 5 Merges =====\n\n\n")
-#summary(Inteli5Merges)
+cat("\n\n\n===== Inteli 5 Merges =====\n\n\n")
+summary(Inteli5Merges)
 ```
 
 ## Ajuste do Dataset
@@ -72,14 +72,14 @@ summary(InteliFalhas)
 ```{r}
 InteliStatus <- InteliStatus %>%
   mutate(
-    ID = as.factor(ID),
+    ID = as.character(ID),
     STATUS = as.factor(STATUS),
     STATUS_DATA = as.POSIXct(STATUS_DATA, format="%Y-%m-%d-%H.%M.%S", tz="UTC")
 )
 
 InteliVeiculo <- InteliVeiculo %>%
   mutate(
-    ID = as.factor(ID),
+    ID = as.character(ID),
     MODELL = as.factor(MODELL),
     FARBAU = as.factor(FARBAU),
     FARBIN = as.factor(FARBIN),
@@ -89,7 +89,7 @@ InteliVeiculo <- InteliVeiculo %>%
 
 InteliResultados <- InteliResultados %>%
   mutate(
-    ID = as.factor(ID),
+    ID = as.character(ID),
     RESULT_ID = as.factor(RESULT_ID),
     RESULT_DESCRIPTION = as.character(RESULT_DESCRIPTION),
     CAPTURE_TIME = as.POSIXct(CAPTURE_TIME, format="%Y-%m-%d-%H.%M.%S", tz="UTC"),
@@ -99,7 +99,7 @@ InteliResultados <- InteliResultados %>%
 
 InteliFalhas <- InteliFalhas %>%
   mutate(
-    ID = as.factor(ID),
+    ID = as.character(ID),
     `DATA DETECCAO` = as.POSIXct(`DATA DETECCAO`, format="%Y-%m-%d-%H.%M.%S", tz="UTC"),
     PONTO=as.factor(PONTO),
     LOC_ID=as.factor(LOC_ID),
@@ -115,7 +115,7 @@ InteliFalhas <- InteliFalhas %>%
 
 Inteli5Merges <- Inteli5Merges %>%
     mutate(
-      ID = as.factor((ID)),
+      ID = as.character((ID)),
       
       INTELI_STATUS_STATUS = as.factor(INTELI_STATUS_STATUS),
       INTELI_STATUS_STATUS_DATA = as.POSIXct(INTELI_STATUS_STATUS_DATA, format="%Y-%m-%d-%H.%M.%S", tz="UTC"),
@@ -183,6 +183,10 @@ Para fazer uma análise geral, de como os dados se unem entre si, foi identifica
 -   **InteliFalhas**: Registro de falhas identificadas durante as operações.
 -   ![](images/clipboard-2964888293.png)
 
+### Inteli 5 Merges
+
+Base criada através da união dos 5 IDs com mais registros em todas as tabelas. Feito para validar como os dados se relacionam e identificar correlações.
+
 # Análise Univariada
 
 ## Visualização das distribuições
@@ -227,6 +231,12 @@ create_plots(InteliResultados, "InteliResultados")
 
 ```{r}
 create_plots(InteliFalhas, "InteliFalhas")
+```
+
+### Inteli 5 Merges
+
+```{r}
+create_plots(Inteli5Merges, "Inteli5Merges")
 ```
 
 ## Identificação de outliers
@@ -281,6 +291,12 @@ create_barplot(InteliResultados, "InteliResultados")
 
 ```{r}
 create_barplot(InteliFalhas, "InteliFalhas")
+```
+
+### Inteli 5 Merges
+
+```{r}
+create_barplot(Inteli5Merges, "Inteli5Merges")
 ```
 
 # Análise Bivariada
@@ -352,45 +368,29 @@ create_categorical_correlation_plot(InteliResultados, "InteliResultados")
 create_categorical_correlation_plot(InteliFalhas, "InteliFalhas")
 ```
 
+### Inteli 5 Merges
+
 ```{r}
 create_categorical_correlation_plot(Inteli5Merges, "Inteli5Merges")
-```
-
-## Análise de correlação
-
-```{r}
-corr_matrix <- cor(select(InteliResultados, where(is.numeric)), use="complete.obs")
-print(corr_matrix)
 ```
 
 # Análise Multivariada
 
 ## Análise de Componentes Principais (PCA)
 
-```{r}
-pca <- PCA(select(InteliResultados, where(is.numeric)), graph=FALSE)
-fviz_eig(pca)
-fviz_pca_var(pca, col.var="contrib")
-```
-
-## Interpretação dos Componentes
-
-O primeiro componente principal explica XX% da variância total, indicando que ... O segundo componente contribui com YY% e está relacionado a ...
+A análise de componentes principais (PCA) não é necessária nesse projeto, visto que não há features numéricas, sendo todas apenas categóricas ou descritivas.
 
 # Conclusão e Discussão
 
 ## Sumário das Descobertas
 
--   A variável X apresentou distribuição assim...
--   A relação entre as variáveis Y e Z demonstrou ...
--   O PCA revelou que os componentes principais explicam ...
+-   Nem todos os Ids aparecem em todas as tabelas
+-   A união dos dados gera um dataset gigantesco.
+-   Todos os status são NOK
+-   A base de veículos possui muitos dados de um modelo específico, e menos de outros
 
 ## Discussão sobre Limitações e Possíveis Melhorias
 
--   O conjunto de dados apresenta algumas limitações, como...
--   Algumas variáveis poderiam ser transformadas para melhorar a análise...
--   Sugere-se a coleta de dados adicionais para aprimorar futuras análises.
+-   Melhorar balanceamento dos dados
 
-------------------------------------------------------------------------
-
-**Fim do Relatório**
+-   Melhorar estratégia de união dos dados usada, sumarizando status para uma análise detalhada
