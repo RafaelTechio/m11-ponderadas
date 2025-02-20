@@ -7,9 +7,9 @@ from .logger import logger
 
 class ParquetConverter:
     @staticmethod
-    def convert_message_to_parquet(message: Dict[str, Any]) -> bytes:
+    def convert_message_to_parquet(message: list) -> bytes:
         try:
-            df = pd.DataFrame([message])
+            df = pd.DataFrame(message)
             parquet_buffer = df.to_parquet()
             logger.info("Message successfully converted to parquet format")
             return parquet_buffer

@@ -38,14 +38,15 @@ class DataIngestionApp:
     def process_message(self, ch, method, properties, body):
         try:
             # Decodifica a mensagem
-            message = json.loads(body)
-            logger.info(f"Mensagem recebida: {message.get('ID', 'ID não encontrado')}")
+            message: list = json.loads(body)
+
+            logger.info(f"Mensagem recebida: {len(message)} linhas")
 
             # Converte para parquet
             parquet_data = ParquetConverter.convert_message_to_parquet(message)
 
             # Upload para Supabase
-            file_name = f"data_{time.time()}_{message.get('ID', 'unknown_id')}.parquet"
+            file_name = f"data_{time.time()}_{len(message)}.parquet"
             self.storage.upload_parquet(parquet_data, file_name)
 
             # Confirma o processamento
