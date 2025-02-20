@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "data-ingestion"
+version = "0.1.0"
+description = "Pacote para ingestão de dados do RabbitMQ para Supabase"
+authors = ["Seu Nome <seu.email@exemplo.com>"]
+readme = "README.md"
+packages = [{include = "data_ingestion"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+pika = "^1.3.2"
+pandas = "^2.2.3"
+supabase = "^2.13.0"
+pyarrow = "^19.0.1"
+python-dotenv = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
+black = "^23.7.0"
+flake8 = "^6.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+start = "data_ingestion.main:DataIngestionApp().run"

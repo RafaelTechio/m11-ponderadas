@@ -275,6 +275,10 @@ create_barplot <- function(data, table_name) {
 create_barplot(InteliStatus, 'InteliStatus')
 ```
 
+```{r}
+InteliStatus
+```
+
 ### Inteli Veiculos
 
 ```{r}
@@ -379,6 +383,47 @@ create_categorical_correlation_plot(Inteli5Merges, "Inteli5Merges")
 ## Análise de Componentes Principais (PCA)
 
 A análise de componentes principais (PCA) não é necessária nesse projeto, visto que não há features numéricas, sendo todas apenas categóricas ou descritivas.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# Merge entre InteliStatus e InteliVeiculo
+df_status_veiculo <- InteliStatus %>%
+  inner_join(InteliVeiculo, by = "ID") %>%
+  count(MODELL, STATUS) %>%
+  group_by(MODELL) %>%
+  mutate(Percent = n / sum(n) * 100)
+
+# Ajuste para exibir menos rótulos
+df_status_veiculo <- df_status_veiculo %>%
+  mutate(Label = as.character(n))  # Exibir apenas os maiores 25%
+
+# Gerando o heatmap melhorado
+p <- ggplot(df_status_veiculo, aes(x = STATUS, y = MODELL, fill = Percent)) +
+  geom_tile(color = "white", size = 0.2) +  # Adiciona bordas brancas finas
+  geom_text(aes(label = Label), color = "black", size = 3, angle = 90) +  # Apenas valores altos
+  scale_fill_gradient(low = "white", high = "blue") +
+  theme_minimal() +
+  labs(title = "Distribuição percentual de Status por Modell", 
+       x = "Status", 
+       y = "Modelo do Veículo", 
+       fill = "Porcentagem") +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1, size = 6),  # Ajusta rotação e tamanho do eixo X
+    axis.text.y = element_text(size = 7),  # Reduz tamanho do eixo Y
+    plot.title = element_text(hjust = 0.5, size = 14),
+    legend.position = "right"
+  )
+
+# Salvar para evitar compressão no RStudio
+ggsave("heatmap_melhorado.png", plot = p, width = 12, height = 8, dpi = 300)
+
+# Mostrar no console
+p
+
+
+```
 
 # Conclusão e Discussão
 
