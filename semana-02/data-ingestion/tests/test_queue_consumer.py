@@ -3,13 +3,15 @@ from data_ingestion.queue_consumer import RabbitMQConsumer
 from data_ingestion.exceptions import QueueConnectionError, MessageProcessingError
 
 def test_rabbitmq_init():
-    consumer = RabbitMQConsumer(host="localhost", queue="test_queue")
+    consumer = RabbitMQConsumer(host="localhost", queue="test_queue", user="admin", password="admin")
     assert consumer.host == "localhost"
     assert consumer.queue == "test_queue"
     assert consumer.port == 5672
+    assert consumer.user == "admin"
+    assert consumer.port == "admin"
 
 def test_rabbitmq_connection_success(mock_pika_connection):
-    consumer = RabbitMQConsumer(host="localhost", queue="test_queue")
+    consumer = RabbitMQConsumer(host="localhost", queue="test_queue", user="admin", password="admin")
     consumer.connect()
     
     mock_pika_connection.assert_called_once_with(
@@ -20,13 +22,13 @@ def test_rabbitmq_connection_success(mock_pika_connection):
 
 def test_rabbitmq_connection_failure(mock_pika_connection):
     mock_pika_connection.side_effect = Exception("Connection failed")
-    consumer = RabbitMQConsumer(host="localhost", queue="test_queue")
+    consumer = RabbitMQConsumer(host="localhost", queue="test_queue", user="admin", password="admin")
     
     with pytest.raises(QueueConnectionError):
         consumer.connect()
 
 def test_rabbitmq_consume(mock_pika_connection):
-    consumer = RabbitMQConsumer(host="localhost", queue="test_queue")
+    consumer = RabbitMQConsumer(host="localhost", queue="test_queue", user="admin", password="admin")
     consumer.connect()
     
     callback = lambda x: x
@@ -40,7 +42,7 @@ def test_rabbitmq_consume(mock_pika_connection):
     consumer._channel.start_consuming.assert_called_once()
 
 def test_rabbitmq_close(mock_pika_connection):
-    consumer = RabbitMQConsumer(host="localhost", queue="test_queue")
+    consumer = RabbitMQConsumer(host="localhost", queue="test_queue", user="admin", password="admin")
     consumer.connect()
     consumer.close()
     
