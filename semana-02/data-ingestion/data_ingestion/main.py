@@ -37,25 +37,20 @@ class DataIngestionApp:
 
     def process_message(self, ch, method, properties, body):
         try:
-            # Decodifica a mensagem
             message: list = json.loads(body)
 
             logger.info(f"Mensagem recebida: {len(message)} linhas")
 
-            # Converte para parquet
             parquet_data = ParquetConverter.convert_message_to_parquet(message)
 
-            # Upload para Supabase
             file_name = f"data_{time.time()}_{len(message)}.parquet"
             self.storage.upload_parquet(parquet_data, file_name)
 
-            # Confirma o processamento
             ch.basic_ack(delivery_tag=method.delivery_tag)
             logger.info(f"Mensagem processada com sucesso: {file_name}")
 
         except Exception as e:
             logger.error(f"Erro ao processar mensagem: {str(e)}")
-            # Rejeita a mensagem em caso de erro
             ch.basic_nack(delivery_tag=method.delivery_tag, requeue=True)
 
     def run(self):
