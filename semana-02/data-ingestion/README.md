@@ -11,24 +11,37 @@ Este projeto implementa um sistema robusto de ingestão de dados que consome men
 data-ingestion/
 ├── data_ingestion/
 │   ├── __init__.py
-│   ├── queue_consumer.py    # Consumidor RabbitMQ
-│   ├── data_converter.py    # Conversor para Parquet
-│   ├── storage.py           # Interface com Supabase
-│   ├── exceptions.py        # Exceções customizadas 
-│   ├── logger.py           # Configuração de logs
-│   ├── config.py           # Configurações do ambiente
-│   └── main.py             # Ponto de entrada da aplicação
+│   ├── app.py                 # Aplicação principal
+│   ├── config.py              # Configurações do ambiente
+│   ├── data_processor.py      # Processador de dados
+│   ├── dlq_handler.py         # Tratamento de Dead Letter Queue
+│   ├── exceptions.py          # Exceções customizadas
+│   ├── logger.py              # Configuração de logs
+│   ├── main.py                # Ponto de entrada da aplicação
+│   ├── parquet_converter.py   # Conversor para Parquet
+│   ├── queue_consumer.py      # Consumidor RabbitMQ
+│   └── storage.py             # Interface com Supabase
 ├── tests/
+│   ├── __pycache__/
 │   ├── __init__.py
+│   ├── test_app.py
+│   ├── test_config.py
+│   ├── test_data_processor.py
+│   ├── test_dlq_handler.py
+│   ├── test_main.py
+│   ├── test_parquet_converter.py
 │   ├── test_queue_consumer.py
-│   ├── test_data_converter.py
-│   ├── test_storage.py
-│   └── conftest.py
-├── docker-compose.yml
-├── pyproject.toml
-├── Makefile
+│   └── test_storage.py
+├── .pytest_cache/
+├── .coverage
+├── .env
 ├── .env.example
+├── .gitignore
+├── poetry.lock
+├── pyproject.toml
+├── docker-compose.yml
 └── README.md
+
 ```
 
 ## ⚙️ Configuração do Ambiente
@@ -87,6 +100,9 @@ Execute os testes com cobertura:
 ```bash
 poetry run pytest --cov=data_ingestion
 ```
+
+![image](https://github.com/user-attachments/assets/e3d79ba8-dd55-4b84-984c-9f312bceeaf4)
+
 
 ## 🔍 Monitoramento e Logs
 - Logs detalhados de todas as operações
