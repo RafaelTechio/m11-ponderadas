@@ -6,6 +6,8 @@
 
 Este projeto implementa um sistema robusto de ingestão de dados que consome mensagens de uma fila RabbitMQ, converte para o formato Parquet e armazena no Supabase Storage. O projeto foi desenvolvido referente aos critérios avaliativos da ponderada da semana 2.
 
+Há um mecanismo de retry na implementação que na terceira tentativa de consumir uma mensagem com falha, envia ela para uma DLQ.
+
 ## 🏗️ Estrutura do Projeto
 ```
 data-ingestion/
