@@ -9,6 +9,9 @@ class MessageProcessingError(Exception):
 class DataConversionError(Exception):
     pass
 
+class ConfigError(Exception):
+    pass
+
 
 class StorageError(Exception):
     pass

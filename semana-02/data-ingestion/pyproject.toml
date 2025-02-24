@@ -13,6 +13,7 @@ pandas = "^2.2.3"
 supabase = "^2.13.0"
 pyarrow = "^19.0.1"
 python-dotenv = "^1.0.0"
+pybreaker = "^1.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
@@ -25,4 +26,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-start = "data_ingestion.main:DataIngestionApp().run"
+start = "data_ingestion.main:main"

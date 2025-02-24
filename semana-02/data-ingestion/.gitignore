@@ -6,6 +6,7 @@
 venv/
 .env/
 .env
+*.env
 
 # Ignorar arquivos de compilação
 __pycache__/

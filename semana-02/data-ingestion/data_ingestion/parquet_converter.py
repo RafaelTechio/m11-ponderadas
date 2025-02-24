@@ -1,15 +1,19 @@
 import pandas as pd
-from typing import Dict, Any
-import json
 from .exceptions import DataConversionError
 from .logger import logger
 
 
 class ParquetConverter:
     @staticmethod
-    def convert_message_to_parquet(message: list) -> bytes:
+    def convert_message_to_parquet(message) -> bytes:
         try:
-            df = pd.DataFrame(message)
+            if isinstance(message, list):
+                df = pd.DataFrame(message)
+            elif isinstance(message, dict):
+                df = pd.DataFrame([message])
+            else:
+                raise DataConversionError("Invalid message format. Expected list or dict.")
+
             parquet_buffer = df.to_parquet()
             logger.info("Message successfully converted to parquet format")
             return parquet_buffer

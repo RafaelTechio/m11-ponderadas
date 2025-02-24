@@ -3,11 +3,8 @@ import pika
 from .exceptions import QueueConnectionError, MessageProcessingError
 from .logger import logger
 
-
 class RabbitMQConsumer:
-    def __init__(
-        self, host: str, queue: str, user: str, password: str, port: int = 5672
-    ):
+    def __init__(self, host: str, queue: str, user: str, password: str, port: int = 5672):
         self.host = host
         self.queue = queue
         self.port = port
@@ -42,6 +39,21 @@ class RabbitMQConsumer:
         except Exception as e:
             logger.error(f"Error consuming messages: {str(e)}")
             raise MessageProcessingError(f"Error consuming messages: {str(e)}")
+
+    def publish(self, queue: str, message: str) -> None:
+        try:
+            self._channel.basic_publish(
+                exchange='',
+                routing_key=queue,
+                body=message,
+                properties=pika.BasicProperties(
+                    delivery_mode=2,
+                )
+            )
+            logger.info(f"Message sent to {queue}: {message}")
+        except Exception as e:
+            logger.error(f"Error publishing message: {str(e)}")
+            raise QueueConnectionError(f"Error publishing message: {str(e)}")
 
     def close(self) -> None:
         if self._connection:
