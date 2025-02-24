@@ -615,3 +615,16 @@ Conteúdo do parquet:
 
 ![image](https://github.com/user-attachments/assets/a72f218c-c377-45a1-a79f-241313c4a09b)
 
+
+Mensagem com erro:
+
+![image](https://github.com/user-attachments/assets/7b24c530-b108-4409-a033-3e997062bce7)
+
+Logs:
+
+![image](https://github.com/user-attachments/assets/56695a99-a685-4d7b-ae16-04b0ab20d930)
+
+DLQ:
+
+![image](https://github.com/user-attachments/assets/1adc93ae-54d8-4871-bab9-8095a411eb79)
+
