@@ -69,15 +69,18 @@ py -m cp .env.example .env
 ```
 Edite o arquivo `.env` com suas configurações:
 ```env
-RABBITMQ_HOST=localhost
-RABBITMQ_PORT=5672
-RABBITMQ_QUEUE=data_queue
-RABBITMQ_USERNAME=guest
-RABBITMQ_PASSWORD=guest
+RABBITMQ_HOST=
+RABBITMQ_PORT=
+RABBITMQ_QUEUE=
+RABBITMQ_USERNAME=
+RABBITMQ_PASSWORD=
+RABBITMQ_DLQ=
 
-SUPABASE_URL=sua_url_do_supabase
-SUPABASE_KEY=sua_chave_do_supabase
-SUPABASE_BUCKET=seu_bucket
+MESSAGE_RETRY_NUMBER=
+
+SUPABASE_URL=
+SUPABASE_KEY=
+SUPABASE_BUCKET=
 ```
 
 ## 🚀 Execução
