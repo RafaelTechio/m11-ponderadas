@@ -85,7 +85,7 @@ $$
 
 ### Otimização
 
-Um dos tipos de otimização mais comuns é a filtragens dos dados desnecessários em uma query, garantindo que tudo aquilo que não for importante, seja descartado dos cálculos. Nesse sentido, iremos trocar os joins por inner joins, garantindo que apenas casos que atendem a todos os critérios de filtragem sejam resgatados:
+Um dos tipos de otimização mais comuns é a filtragem dos dados desnecessários em uma query, garantindo que tudo aquilo que não for importante, seja descartado dos cálculos. Nesse sentido, iremos trocar os joins por inner joins, garantindo que apenas casos que atendem a todos os critérios de filtragem sejam unidos, resgatados e processados:
 
 ```sql
 SELECT user.name, user.email, product.category, AVG(order_item.total_price) as ticket_medio
