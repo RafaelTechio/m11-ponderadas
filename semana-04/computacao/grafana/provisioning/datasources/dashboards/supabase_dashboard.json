@@ -1,0 +1,31 @@
+{
+    "dashboard": {
+      "id": null,
+      "title": "Supabase Storage Dashboard",
+      "panels": [
+        {
+          "title": "Acessos ao Storage",
+          "type": "timeseries",
+          "targets": [
+            {
+              "expr": "supabase_storage_access_total",
+              "legendFormat": "Acessos"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 0, "w": 12, "h": 6 }
+        },
+        {
+          "title": "Tempo de Resposta (s)",
+          "type": "timeseries",
+          "targets": [
+            {
+              "expr": "supabase_storage_request_duration_seconds",
+              "legendFormat": "Duração"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 6, "w": 12, "h": 6 }
+        }
+      ]
+    }
+  }
+  

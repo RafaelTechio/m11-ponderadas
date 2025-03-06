@@ -21,6 +21,12 @@ class Config:
             self.SUPABASE_URL = self._get_var_or_error("SUPABASE_URL")
             self.SUPABASE_KEY = self._get_var_or_error("SUPABASE_KEY")
             self.SUPABASE_BUCKET = self._get_var_or_error("SUPABASE_BUCKET")
+
+            self.CLICKHOUSE_DATABASE = self._get_var_or_error("CLICKHOUSE_DATABASE")
+            self.CLICKHOUSE_HOST = self._get_var_or_error("CLICKHOUSE_HOST")
+            self.CLICKHOUSE_PORT = int(self._get_var_or_error("CLICKHOUSE_PORT"))
+            self.CLICKHOUSE_PASSWORD = self._get_var_or_error("CLICKHOUSE_PASSWORD")
+            self.CLICKHOUSE_USER = self._get_var_or_error("CLICKHOUSE_USER")
         except ConfigError as e:
             raise e
         except Exception as e:

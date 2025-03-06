@@ -4,6 +4,7 @@ import time
 import json
 from data_ingestion.queue_consumer import RabbitMQConsumer
 from data_ingestion.storage import SupabaseStorage
+from data_ingestion.metrics import MetricsPrometheus
 from data_ingestion.config import Config
 from data_ingestion.logger import logger
 from data_ingestion.data_processor import DataProcessor
@@ -25,8 +26,10 @@ class App:
             bucket=config.SUPABASE_BUCKET,
         )
 
+        self.metrics = MetricsPrometheus()
+
         self.dlq_handler = DLQHandler(config.RABBITMQ_DLQ, self.consumer)
-        self.processor = DataProcessor(self.storage)
+        self.processor = DataProcessor(self.storage, self.metrics)
 
         self.message_retry_number: int = config.MESSAGE_RETRY_NUMBER
         self.setup_signal_handlers()
@@ -64,6 +67,7 @@ class App:
     def run(self):
         while True:
             try:
+                self.metrics.star_server()
                 logger.info("Iniciando aplicação de ingestão de dados...")
                 self.consumer.connect()
 
